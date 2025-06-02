@@ -13,3 +13,12 @@ This project presents a single-page mockup for an external access and user manag
 ```
 
 Open `index.html` in a browser to view the page.
+## Python Examples
+
+The repository includes simple visualization scripts. Run `fancy_pyramid.py` to generate a colorful 3D pyramid image:
+
+```
+python fancy_pyramid.py
+```
+
+The script saves `fancy_pyramid.png` in the project root.
