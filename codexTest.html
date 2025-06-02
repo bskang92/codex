@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FADS 외부 접근 플랫폼 및 사용자 관리</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'Noto Sans KR', sans-serif;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+        }
+        .platform-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .platform-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        .grid-pattern {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.5;
+        }
+        .icon-platform {
+            background-color: rgba(59, 130, 246, 0.2);
+            height: 60px;
+            width: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-bottom: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .platform-title {
+            position: relative;
+            display: inline-block;
+        }
+        .platform-title::after {
+            content: '';
+            position: absolute;
+            width: 80%;
+            height: 3px;
+            background: rgba(59, 130, 246, 0.5);
+            bottom: -6px;
+            left: 0;
+            border-radius: 2px;
+        }
+        .mockup-container {
+            position: relative;
+            height: 140px;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .browser-mockup {
+            border-top: 24px solid rgba(60, 60, 60, 0.7);
+            position: relative;
+            border-radius: 8px 8px 0 0;
+        }
+        .browser-mockup::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: -16px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: rgba(237, 76, 92, 0.8);
+        }
+        .browser-mockup::after {
+            content: '';
+            position: absolute;
+            left: 24px;
+            top: -16px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: rgba(253, 203, 88, 0.8);
+        }
+        .browser-dots::before {
+            content: '';
+            position: absolute;
+            left: 40px;
+            top: -16px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: rgba(120, 177, 89, 0.8);
+        }
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(45deg, #3b82f6, #1e3a8a);
+            font-weight: bold;
+        }
+        .secure-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: linear-gradient(45deg, #10B981, #047857);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(255, 255, 255, 0.7);
+        }
+        .access-level {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+        }
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+            100% { opacity: 0.5; transform: scale(1); }
+        }
+        .connection-line {
+            position: absolute;
+            background: rgba(59, 130, 246, 0.4);
+            z-index: 1;
+        }
+        .horizontal-line {
+            height: 2px;
+        }
+        .vertical-line {
+            width: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide flex flex-col p-12">
+        <div class="grid-pattern"></div>
+        
+        <!-- Header -->
+        <div class="z-10 mb-6">
+            <h2 class="text-4xl font-bold mb-2">FADS <span class="text-blue-200">외부 접근 플랫폼</span></h2>
+            <div class="w-24 h-1 bg-blue-300 rounded-full mb-4"></div>
+        </div>
+        
+        <!-- Main Content - 2x2 Grid -->
+        <div class="grid grid-cols-2 gap-8 w-full z-10">
+            <!-- Upper Left: Web Platform -->
+            <div class="platform-box p-5">
+                <div class="flex items-center mb-3">
+                    <div class="icon-platform">
+                        <i class="fas fa-globe text-2xl text-blue-200"></i>
+                    </div>
+                    <h3 class="text-xl font-bold ml-4 platform-title">웹 기반 접근 플랫폼</h3>
+                </div>
+                <div class="mockup-container browser-mockup browser-dots">
+                    <div class="p-2 h-full flex flex-col">
+                        <div class="bg-blue-900 bg-opacity-40 p-2 mb-2 flex items-center justify-between">
+                            <span class="text-xs text-blue-200">FADS 통합 대시보드</span>
+                            <div class="flex items-center">
+                                <i class="fas fa-search text-xs mr-3 text-blue-200"></i>
+                                <i class="fas fa-bell text-xs text-blue-200"></i>
+                            </div>
+                        </div>
+                        <div class="flex-1 grid grid-cols-4 gap-1">
+                            <div class="bg-blue-900 bg-opacity-30 rounded p-1 text-center">
+                                <div class="text-xs text-white">단속정보</div>
+                            </div>
+                            <div class="bg-blue-900 bg-opacity-30 rounded p-1 text-center">
+                                <div class="text-xs text-white">분석결과</div>
+                            </div>
+                            <div class="bg-blue-900 bg-opacity-30 rounded p-1 text-center">
+                                <div class="text-xs text-white">통계 데이터</div>
+                            </div>
+                            <div class="bg-blue-900 bg-opacity-30 rounded p-1 text-center">
+                                <div class="text-xs text-white">협업 관리</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ul class="list-disc pl-5 mt-3 text-blue-50 text-sm">
+                    <li>수사관 마약 수사 활용 중심 인터페이스</li>
+                    <li>현장 단속 정보의 실시간 업로드 및 조회</li>
+                    <li>유관 기관 간 안전한 정보 공유 체계</li>
+                    <li>다양한 단말기 호환성(반응형 디자인)</li>
+                </ul>
+            </div>
+            
+            <!-- Upper Right: User Management -->
+            <div class="platform-box p-5">
+                <div class="flex items-center mb-3">
+                    <div class="icon-platform">
+                        <i class="fas fa-users-cog text-2xl text-blue-200"></i>
+                    </div>
+                    <h3 class="text-xl font-bold ml-4 platform-title">사용자 관리 시스템</h3>
+                </div>
+                <div class="mockup-container p-3">
+                    <div class="flex justify-between mb-3">
+                        <span class="text-xs text-blue-200">사용자 계정 관리</span>
+                        <span class="bg-blue-700 rounded px-1.5 py-0.5 text-xs">3단계 인증</span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2">
+                        <div class="bg-blue-900 bg-opacity-40 rounded p-2 relative">
+                            <div class="flex items-center">
+                                <div class="user-avatar mr-2">PA</div>
+                                <div class="text-xs">
+                                    <div>수사관</div>
+                                    <div class="text-blue-300 text-xs">경찰청</div>
+                                </div>
+                            </div>
+                            <div class="mt-1 flex justify-between items-center">
+                                <span class="access-level bg-green-500"></span>
+                                <span class="text-xs text-green-300">전체 접근</span>
+                            </div>
+                            <div class="secure-badge">
+                                <i class="fas fa-check text-xs"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-blue-900 bg-opacity-40 rounded p-2 relative">
+                            <div class="flex items-center">
+                                <div class="user-avatar mr-2">PD</div>
+                                <div class="text-xs">
+                                    <div>분석관</div>
+                                    <div class="text-blue-300 text-xs">검찰청</div>
+                                </div>
+                            </div>
+                            <div class="mt-1 flex justify-between items-center">
+                                <span class="access-level bg-yellow-500"></span>
+                                <span class="text-xs text-yellow-300">부분 접근</span>
+                            </div>
+                            <div class="secure-badge">
+                                <i class="fas fa-check text-xs"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-blue-900 bg-opacity-40 rounded p-2 relative">
+                            <div class="flex items-center">
+                                <div class="user-avatar mr-2">CS</div>
+                                <div class="text-xs">
+                                    <div>연구원</div>
+                                    <div class="text-blue-300 text-xs">식약처</div>
+                                </div>
+                            </div>
+                            <div class="mt-1 flex justify-between items-center">
+                                <span class="access-level bg-blue-500"></span>
+                                <span class="text-xs text-blue-300">분석 권한</span>
+                            </div>
+                            <div class="secure-badge">
+                                <i class="fas fa-check text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ul class="list-disc pl-5 mt-3 text-blue-50 text-sm">
+                    <li>사용자 생성/수정/삭제 기능</li>
+                    <li>기관별 접근 권한 차등 부여</li>
+                    <li>역할 기반 접근 제어(RBAC) 적용</li>
+                    <li>다중 인증을 통한 보안성 강화</li>
+                </ul>
+            </div>
+            
+            <!-- Lower Left: Information Security -->
+            <div class="platform-box p-5">
+                <div class="flex items-center mb-3">
+                    <div class="icon-platform">
+                        <i class="fas fa-shield-alt text-2xl text-blue-200"></i>
+                    </div>
+                    <h3 class="text-xl font-bold ml-4 platform-title">정보 보안 체계</h3>
+                </div>
+                <div class="mockup-container p-3 relative">
+                    <!-- Security layers visualization -->
+                    <div class="absolute w-64 h-64 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                        <div class="absolute w-64 h-64 bg-blue-900 bg-opacity-10 rounded-full"></div>
+                        <div class="absolute w-48 h-48 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-800 bg-opacity-30 rounded-full"></div>
+                        <div class="absolute w-32 h-32 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-700 bg-opacity-50 rounded-full"></div>
+                        <div class="absolute w-16 h-16 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-600 bg-opacity-70 rounded-full pulse flex items-center justify-center">
+                            <i class="fas fa-database text-white text-sm"></i>
+                        </div>
+                        
+                        <!-- Security icons -->
+                        <div class="absolute top-2 left-1/2 transform -translate-x-1/2 text-xs text-blue-200">
+                            <i class="fas fa-lock mr-1"></i>암호화
+                        </div>
+                        <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-xs text-blue-200">
+                            <i class="fas fa-user-shield mr-1"></i>권한관리
+                        </div>
+                        <div class="absolute left-2 top-1/2 transform -translate-y-1/2 text-xs text-blue-200">
+                            <i class="fas fa-history mr-1"></i>감사로그
+                        </div>
+                        <div class="absolute right-2 top-1/2 transform -translate-y-1/2 text-xs text-blue-200">
+                            <i class="fas fa-file-contract mr-1"></i>이용약관
+                        </div>
+                    </div>
+                </div>
+                <ul class="list-disc pl-5 mt-3 text-blue-50 text-sm">
+                    <li>전송 및 저장 데이터 암호화 적용</li>
+                    <li>활동 로그 기록 및 정기적 감사</li>
+                    <li>시스템 접근 및 사용 이력 추적</li>
+                    <li>목적 외 사용 방지 이용약관 적용</li>
+                </ul>
+            </div>
+            
+            <!-- Lower Right: Institutional Collaboration -->
+            <div class="platform-box p-5">
+                <div class="flex items-center mb-3">
+                    <div class="icon-platform">
+                        <i class="fas fa-handshake text-2xl text-blue-200"></i>
+                    </div>
+                    <h3 class="text-xl font-bold ml-4 platform-title">기관 협업 체계</h3>
+                </div>
+                <div class="mockup-container p-3 relative">
+                    <!-- Central node -->
+                    <div class="absolute w-20 h-20 bg-blue-600 bg-opacity-70 rounded-full flex items-center justify-center left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 border-2 border-white border-opacity-20">
+                        <span class="text-sm font-bold">FADS<br>시스템</span>
+                    </div>
+                    
+                    <!-- Connected nodes -->
+                    <div class="absolute w-16 h-16 bg-blue-800 bg-opacity-60 rounded-full flex items-center justify-center left-1/4 top-1/4 transform -translate-x-1/2 -translate-y-1/2 z-5 border border-white border-opacity-20">
+                        <span class="text-xs text-center">경찰청</span>
+                    </div>
+                    
+                    <div class="absolute w-16 h-16 bg-blue-800 bg-opacity-60 rounded-full flex items-center justify-center left-3/4 top-1/4 transform -translate-x-1/2 -translate-y-1/2 z-5 border border-white border-opacity-20">
+                        <span class="text-xs text-center">검찰청</span>
+                    </div>
+                    
+                    <div class="absolute w-16 h-16 bg-blue-800 bg-opacity-60 rounded-full flex items-center justify-center left-1/4 top-3/4 transform -translate-x-1/2 -translate-y-1/2 z-5 border border-white border-opacity-20">
+                        <span class="text-xs text-center">식약처</span>
+                    </div>
+                    
+                    <div class="absolute w-16 h-16 bg-blue-800 bg-opacity-60 rounded-full flex items-center justify-center left-3/4 top-3/4 transform -translate-x-1/2 -translate-y-1/2 z-5 border border-white border-opacity-20">
+                        <span class="text-xs text-center">관세청</span>
+                    </div>
+                    
+                    <!-- Connection lines -->
+                    <div class="connection-line horizontal-line absolute left-1/4 top-1/4 w-1/2 transform -translate-y-1/2"></div>
+                    <div class="connection-line horizontal-line absolute left-1/4 top-3/4 w-1/2 transform -translate-y-1/2"></div>
+                    <div class="connection-line vertical-line absolute left-1/4 top-1/4 h-1/2 transform -translate-x-1/2"></div>
+                    <div class="connection-line vertical-line absolute left-3/4 top-1/4 h-1/2 transform -translate-x-1/2"></div>
+                </div>
+                <ul class="list-disc pl-5 mt-3 text-blue-50 text-sm">
+                    <li>다중 기관 협업 필요 지역 자동 식별</li>
+                    <li>정보 공유 범위 명확화</li>
+                    <li>기관별 전문성 결합을 통한 시너지 창출</li>
+                    <li>협업 활동 성과 측정 및 피드백 체계</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Bottom Info -->
+        <div class="mt-auto w-full bg-blue-900 bg-opacity-30 rounded-lg p-3 z-10 flex items-center justify-between">
+            <div class="flex items-center">
+                <i class="fas fa-lock-alt text-yellow-300 text-xl mr-3"></i>
+                <p class="text-sm text-blue-100">
+                    안전하고 효율적인 정보 공유로 국가적 마약 대응 역량 강화
+                </p>
+            </div>
+            <div class="text-sm text-blue-200 opacity-80">
+                <i class="fas fa-fingerprint mr-1"></i> 보안과 효율성의 균형
+            </div>
+        </div>
+        
+        <!-- Page number -->
+        <div class="absolute bottom-4 right-6 text-sm text-blue-200 opacity-70">5</div>
+    </div>
+</body>
+</html>
