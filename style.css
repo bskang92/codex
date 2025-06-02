@@ -1,0 +1,101 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple SD Gothic Neo',
+        'Malgun Gothic', 'Nanum Gothic', Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    padding: 2rem;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h1 {
+    font-weight: 700;
+    border-bottom: 2px solid #3c6382;
+    padding-bottom: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.feature-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    height: 100%;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border-top: 4px solid;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 0.5rem;
+}
+
+.card-content {
+    font-size: 0.95rem;
+}
+
+.card-content ul {
+    padding-left: 1.5rem;
+    list-style-type: none;
+}
+
+.card-content li {
+    margin-bottom: 0.75rem;
+    position: relative;
+}
+
+.card-content li:before {
+    content: "\2022";
+    color: #3c6382;
+    font-weight: bold;
+    position: absolute;
+    left: -1rem;
+}
+
+.bottom-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.raman-spectrum {
+    border-top-color: #1e3799;
+}
+
+.ai-algorithm {
+    border-top-color: #38ada9;
+}
+
+.analysis-tools {
+    border-top-color: #b71540;
+}
+
+.prediction-analysis {
+    border-top-color: #fa983a;
+}
+
+.platform-integration {
+    border-top-color: #6a89cc;
+}
+
+.feature-card.active {
+    background-color: #f0f8ff;
+}
