@@ -6,13 +6,13 @@ This project presents a single-page mockup for an external access and user manag
 
 ```
 / (project root)
-├── index.html       # main HTML file
-├── codexTest.html   # original single-file version
+├── codex/            # Codex CLI & Rust source code directory
+├── codexTest.html    # single-file demo version
 └── css/
-    └── style.css    # custom styles
+    └── style.css     # custom styles
 ```
 
-Open `index.html` in a browser to view the page.
+Open `codexTest.html` in a browser to view the page.
 ## Python Examples
 
 The repository includes simple visualization scripts. Run `fancy_pyramid.py` to generate a colorful 3D pyramid image:
