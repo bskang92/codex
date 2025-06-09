@@ -1,47 +1,97 @@
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d.art3d import Poly3DCollection
-from matplotlib import cm
-import numpy as np
-
-"""화려한 3D 피라미드 예제.
-기존 단순 선 기반 피라미드 대신 컬러 그라데이션과 투명도를 적용한 3D 모델을 그립니다."""
-
-# 피라미드 높이 (정육면체 한 변 길이와 동일한 스케일)
-height = 1.0
-
-# 밑면 정사각형 좌표 (시계방향)
-base = np.array([
-    [0.0, 0.0, 0.0],
-    [1.0, 0.0, 0.0],
-    [1.0, 1.0, 0.0],
-    [0.0, 1.0, 0.0]
-])
-
-# 꼭짓점 좌표
-apex = np.array([0.5, 0.5, height])
-
-# 각 면을 정의 (네 면과 밑면)
-faces = [
-    [base[0], base[1], apex],
-    [base[1], base[2], apex],
-    [base[2], base[3], apex],
-    [base[3], base[0], apex],
-    [base[0], base[1], base[2], base[3]]
-]
-
-# 그라데이션 색상 지정
-colors = cm.plasma(np.linspace(0.2, 0.9, len(faces)))
-
-fig = plt.figure(figsize=(6, 6))
-ax = fig.add_subplot(111, projection="3d")
-poly = Poly3DCollection(faces, facecolors=colors, edgecolors='k', linewidths=1, alpha=0.95)
-ax.add_collection3d(poly)
-
-# 보기 각도 및 축 설정
-ax.set_xlim(0, 1)
-ax.set_ylim(0, 1)
-ax.set_zlim(0, height)
-ax.axis('off')
-ax.view_init(elev=25, azim=30)
-plt.tight_layout()
-plt.show()
+ (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
+diff --git a/CodexTest.py b/CodexTest.py
+index 7e8ccc1feb6ca368a620480c2ead49849397288f..7376b3b7992b2cec59759c8743d440f30c3f5304 100644
+--- a/CodexTest.py
++++ b/CodexTest.py
+@@ -1,47 +1,50 @@
++import matplotlib
++matplotlib.use("Agg")
+ import matplotlib.pyplot as plt
+ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+ from matplotlib import cm
+ import numpy as np
+ 
+ """화려한 3D 피라미드 예제.
+ 기존 단순 선 기반 피라미드 대신 컬러 그라데이션과 투명도를 적용한 3D 모델을 그립니다."""
+ 
+ # 피라미드 높이 (정육면체 한 변 길이와 동일한 스케일)
+ height = 1.0
+ 
+ # 밑면 정사각형 좌표 (시계방향)
+ base = np.array([
+     [0.0, 0.0, 0.0],
+     [1.0, 0.0, 0.0],
+     [1.0, 1.0, 0.0],
+     [0.0, 1.0, 0.0]
+ ])
+ 
+ # 꼭짓점 좌표
+ apex = np.array([0.5, 0.5, height])
+ 
+ # 각 면을 정의 (네 면과 밑면)
+ faces = [
+     [base[0], base[1], apex],
+     [base[1], base[2], apex],
+     [base[2], base[3], apex],
+     [base[3], base[0], apex],
+     [base[0], base[1], base[2], base[3]]
+ ]
+ 
+ # 그라데이션 색상 지정
+ colors = cm.plasma(np.linspace(0.2, 0.9, len(faces)))
+ 
+ fig = plt.figure(figsize=(6, 6))
+ ax = fig.add_subplot(111, projection="3d")
+ poly = Poly3DCollection(faces, facecolors=colors, edgecolors='k', linewidths=1, alpha=0.95)
+ ax.add_collection3d(poly)
+ 
+ # 보기 각도 및 축 설정
+ ax.set_xlim(0, 1)
+ ax.set_ylim(0, 1)
+ ax.set_zlim(0, height)
+ ax.axis('off')
+ ax.view_init(elev=25, azim=30)
+ plt.tight_layout()
+-plt.show()
++plt.savefig("codex_test_pyramid.png", dpi=300)
++print("Saved codex_test_pyramid.png")
+diff --git a/README.md b/README.md
+index 842bd0136833b0449ad4a323395a09710afda707..2b2a2aca510588be94a38765eb7fcaaa6262a1b8 100644
+--- a/README.md
++++ b/README.md
+@@ -1,24 +1,32 @@
+ # FADS External Access Platform
+ 
+ This project presents a single-page mockup for an external access and user management platform. It uses **Tailwind CSS** and **Font Awesome** for quick styling.
+ 
+ ## Structure
+ 
+ ```
+ / (project root)
+ ├── codex/            # Codex CLI & Rust source code directory
+ ├── codexTest.html    # single-file demo version
+ └── css/
+     └── style.css     # custom styles
+ ```
+ 
+ Open `codexTest.html` in a browser to view the page.
+ ## Python Examples
+ 
+ The repository includes simple visualization scripts. Run `fancy_pyramid.py` to generate a colorful 3D pyramid image:
+ 
+ ```
+ python fancy_pyramid.py
+ ```
+ 
+ The script saves `fancy_pyramid.png` in the project root.
++
++You can also run `CodexTest.py` in a headless environment to create `codex_test_pyramid.png`:
++
++```
++python CodexTest.py
++```
++
++This script uses a non-interactive matplotlib backend and outputs the image file instead of displaying it.
+ 
+EOF
+)
